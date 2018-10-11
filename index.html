@@ -1,0 +1,43 @@
+<html>
+
+<head>
+
+	<title>Plain HTML Sandbox</title>
+</head>
+
+<body>
+	<div id="app">
+		<g-signin-button @done="onUserLoggedIn" />
+	</div>
+
+	<script src="https://unpkg.com/vue"></script>
+	<script src="https://apis.google.com/js/api:client.js"></script>
+
+
+	<script>
+		Vue.component('g-signin-button', { 
+      template: '<div ref="signinBtn" class="btn-sign-in">Sign In</div>', 
+      mounted () { 
+        window.gapi.load('auth2', () => { 
+          const auth2 = window.gapi.auth2.init({ 
+            client_id: '87129093400-h8iv99k1vtr0uplti2trcqtcpok4n8n4.apps.googleusercontent.com',
+		        cookiepolicy: 'single_host_origin' 
+          }) 
+          auth2.attachClickHandler(this.$refs.signinBtn, {}, googleUser => { 
+            this.$emit('done',googleUser) 
+          }, error => console.log(error)) 
+          }) 
+        } 
+      }) 
+    new Vue({ 
+      el: '#app', 
+      methods: { 
+        onUserLoggedIn (user) { 
+          console.log(user)
+          } 
+      } 
+    })
+	</script>
+</body>
+
+</html>
